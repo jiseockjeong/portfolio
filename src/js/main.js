@@ -3,11 +3,20 @@ $(document).ready(function () {
   const sections = $('.section');
   const totalSections = sections.length;
   let isScrolling = false;
+  const BREAKPOINT = 1024; // 풀페이지 해제 기준 해상도
+  let isMobile = window.innerWidth <= BREAKPOINT;
 
   // ===================================================
-  // 1. 풀페이지 & 프로그레스 바 제어
+  // 1. 반응형 모드 감지 & 풀페이지 / 일반 스크롤 제어
   // ===================================================
+
+  // 100vh 초과 여부 체크 및 프로그레스 바 표시 클래스 부여 (PC 전용)
   function checkProgressVisibility() {
+    if (isMobile) {
+      sections.removeClass('has_progress');
+      return;
+    }
+
     sections.each(function () {
       const $sec =$(this);
       const scrollHeight = this.scrollHeight;
@@ -21,14 +30,82 @@ $(document).ready(function () {
     });
   }
 
-  checkProgressVisibility();
+  // 네비게이션 버튼 active 동기화
+  function updateNav(index) {
+    $('.a_list .a_btn').removeClass('active');
+    const currentSecElem = sections.eq(index);
+    $('.a_list .a_btn').each(function () {
+      const targetSecClass = $(this).data('sec');
+      if (currentSecElem.hasClass(targetSecClass)) {
+        $(this).addClass('active');
+      }
+    });
+  }
 
+  // [PC 전용] 풀페이지 섹션 이동 함수
+  function moveToSection(index) {
+    if (isMobile) return;
+
+    isScrolling = true;
+    currentIndex = index;
+    updateNav(currentIndex);
+
+    const targetTop = -(currentIndex * window.innerHeight);
+    $('.full_wrap').css('transform', `translateY(${targetTop}px)`);
+
+    setTimeout(function () {
+      isScrolling = false;
+    }, 650);
+  }
+
+  // 화면 리사이즈 시 PC <-> 1024px 이하 모드 자동 전환
+  function handleResponsiveMode() {
+    const nowMobile = window.innerWidth <= BREAKPOINT;
+
+    if (nowMobile !== isMobile) {
+      // 모드가 바뀐 순간 (PC -> 모바일 또는 모바일 -> PC)
+      isMobile = nowMobile;
+
+      if (isMobile) {
+        // [PC -> 1024px 이하로 진입]
+        isScrolling = false;
+        $('.full_wrap').css('transform', 'none');
+        sections.removeClass('has_progress');
+
+        // 풀페이지에서 보고 있던 섹션 위치로 일반 스크롤 위치 이동
+        const targetOffset = sections.eq(currentIndex).offset().top;
+        $('html, body').scrollTop(targetOffset);
+      } else {
+        // [1024px 이하 -> PC로 진입]
+        $('html, body').scrollTop(0);
+        sections.scrollTop(0);
+
+        // 현재 인덱스에 맞춰 풀페이지 위치 재정렬
+        const targetTop = -(currentIndex * window.innerHeight);
+        $('.full_wrap').css('transform', `translateY(${targetTop}px)`);
+        checkProgressVisibility();
+      }
+    } else if (!isMobile) {
+      // PC 상태에서 창 크기만 조절된 경우
+      checkProgressVisibility();
+      const targetTop = -(currentIndex * window.innerHeight);
+      $('.full_wrap').css('transform', `translateY(${targetTop}px)`);
+    }
+  }
+
+  // 초기 실행
+  checkProgressVisibility();
+  if (isMobile) {
+    $('.full_wrap').css('transform', 'none');
+  }
+
+  // 섹션별 내부 스크롤 이벤트 (PC 프로그레스 바 계산)
   sections.each(function () {
     const $sec =$(this);
     const $bar =$sec.find('.progress_bar .bar');
 
     $sec.on('scroll', function () {
-      if (!$sec.hasClass('has_progress')) return;
+      if (isMobile || !$sec.hasClass('has_progress')) return;
 
       const scrollTop = $sec.scrollTop();
       const scrollHeight = this.scrollHeight;
@@ -42,45 +119,33 @@ $(document).ready(function () {
     });
   });
 
-  function updateNav(index) {
-    $('.a_list .a_btn').removeClass('active');
-    const currentSecElem = sections.eq(index);
-    $('.a_list .a_btn').each(function () {
-      const targetSecClass = $(this).data('sec');
-      if (currentSecElem.hasClass(targetSecClass)) {
-        $(this).addClass('active');
-      }
-    });
-  }
-
-  function moveToSection(index) {
-    isScrolling = true;
-    currentIndex = index;
-    updateNav(currentIndex);
-
-    const targetTop = -(currentIndex * window.innerHeight);
-    $('.full_wrap').css('transform', `translateY(${targetTop}px)`);
-
-    setTimeout(function () {
-      isScrolling = false;
-    }, 650);
-  }
-
+  // 네비게이션 버튼(.a_btn) 클릭 시 이동 (PC / 모바일 분기 처리)
   $('.a_list').on('click', '.a_btn', function () {
-    if (isScrolling) return;
     const targetClass = $(this).data('sec');
     const $targetSection =$('.section.' + targetClass);
 
-    if ($targetSection.length > 0) {
-      const targetIndex = sections.index($targetSection);
+    if ($targetSection.length === 0) return;
+    const targetIndex = sections.index($targetSection);
+
+    if (isMobile) {
+      // [1024px 이하]: 일반 웹처럼 해당 섹션 위치로 부드럽게 스크롤 이동
+      currentIndex = targetIndex;
+      updateNav(currentIndex);
+      const offsetTop = $targetSection.offset().top;
+      $('html, body').stop().animate({ scrollTop: offsetTop }, 500);
+    } else {
+      // [PC]: 풀페이지 트랜지션 이동
+      if (isScrolling) return;
       if (targetIndex !== -1 && targetIndex !== currentIndex) {
         moveToSection(targetIndex);
       }
     }
   });
 
+  // [PC 전용] 마우스 휠 풀페이지 이벤트
   $(window).on('wheel', function (e) {
-    if (isScrolling) return;
+    // 1024px 이하에서는 휠 이벤트를 완전히 무시하고 브라우저 기본 스크롤 사용
+    if (isMobile || isScrolling) return;
 
     const currentSection = sections.eq(currentIndex)[0];
     const delta = e.originalEvent.deltaY;
@@ -103,21 +168,38 @@ $(document).ready(function () {
     }
   });
 
+  // [1024px 이하 전용] 일반 스크롤 시 현재 섹션 감지하여 currentIndex 및 네비게이션 갱신
+  $(window).on('scroll', function () {
+    if (!isMobile) return;
+
+    const scrollPos = $(window).scrollTop() + (window.innerHeight / 3);
+
+    sections.each(function (idx) {
+      const top = $(this).offset().top;
+      const bottom = top + $(this).outerHeight();
+
+      if (scrollPos >= top && scrollPos < bottom) {
+        if (currentIndex !== idx) {
+          currentIndex = idx;
+          updateNav(currentIndex);
+        }
+      }
+    });
+  });
+
+  // 창 리사이즈 감지
   $(window).on('resize', function () {
-    checkProgressVisibility();
-    const targetTop = -(currentIndex * window.innerHeight);
-    $('.full_wrap').css('transform', `translateY(${targetTop}px)`);
+    handleResponsiveMode();
   });
 
   // ===================================================
-  // 2. SEC3 (PROJECT) 인터랙션 제어
+  // 2. SEC3 (PROJECT) 인터랙션 제어 (PC/모바일 공통 작동)
   // ===================================================
   const $sec3 =$('.sec3');
-  const $points =$sec3.find('.sub_text .point'); // 0: 지나온길, 1: 42, 2: 12
+  const $points =$sec3.find('.sub_text .point');
   const $projectItems =$sec3.find('.right .info_cont > li');
-  const defaultImgSrc = $sec3.find('.left .img_box img').attr('src'); // 기본 이미지 백업
+  const defaultImgSrc = $sec3.find('.left .img_box img').attr('src');
 
-  // 초기 기본 텍스트 저장 ('지나온길', '42', '12')
   const initialPointTexts = [];
   $points.each(function (idx) {
     const text = $(this).text().trim();
@@ -125,7 +207,6 @@ $(document).ready(function () {
     wrapChars($(this), text);
   });
 
-  // 텍스트를 한 글자씩 <span class="char">로 쪼개는 함수
   function wrapChars($el, text) {
     let html = '';
     for (let i = 0; i < text.length; i++) {
@@ -134,7 +215,6 @@ $(document).ready(function () {
     $el.html(html);
   }
 
-  // .point 텍스트가 순차적으로 내려갔다가 새 텍스트로 올라오는 함수
   function animatePointText($el, newText) {
     const currentText = $el.text().trim();
     if (currentText === String(newText)) return;
@@ -142,7 +222,6 @@ $(document).ready(function () {
     const $oldChars =$el.find('.char');
     const staggerDelay = 50;
 
-    // 1단계: 기존 글자 순차 하강
     $oldChars.each(function (i) {
       const $char =$(this);
       setTimeout(function () {
@@ -152,7 +231,6 @@ $(document).ready(function () {
 
     const totalOutTime = $oldChars.length * staggerDelay + 250;
 
-    // 2단계: 새 글자 세팅 후 순차 상승
     setTimeout(function () {
       let newHtml = '';
       const str = String(newText);
@@ -173,12 +251,10 @@ $(document).ready(function () {
     }, totalOutTime);
   }
 
-  // 숫자 두 자리 포맷팅 (3 -> '03')
   function padZero(num) {
     return num < 10 ? '0' + num : String(num);
   }
 
-  // 좌측 상세 정보 및 이미지 업데이트 함수
   function updateProjectDetail($btn) {
     const $blind =$btn.find('.blind');
     const name = $blind.find('.name').text().trim() || '없음';
@@ -186,7 +262,6 @@ $(document).ready(function () {
     const duration = $blind.find('.duration').text().trim() || '없음';
     const ac = $blind.find('.ac').text().trim() || '없음';
 
-    // .blind 안에 설정한 img 경로 및 alt 추출
     const $blindImg =$blind.find('img');
     const customImgSrc = $blindImg.attr('src');
     const customImgAlt = $blindImg.attr('alt');
@@ -195,16 +270,13 @@ $(document).ready(function () {
     const $imgBox =$sec3.find('.left .img_box');
     const $img =$imgBox.find('img');
 
-    // 변경 시작: .info들과 이미지가 먼저 부드럽게 사라짐
     $textBox.addClass('changing');$imgBox.addClass('changing');
 
     setTimeout(function () {
-      // 1. 텍스트 정보 교체
       $('#name').text(name);
       $('#duration').text(duration);
       $('#ac').text(ac);
 
-      // 2. URL 링크 교체
       const $urlLi =$('#url');
       if (url === '준비중' || url === '없음' || !url.startsWith('http')) {
         $urlLi.html(`<a href="#none" class="url">${url}</a>`);
@@ -212,28 +284,23 @@ $(document).ready(function () {
         $urlLi.html(`<a href="${url}" target="_blank" rel="noopener noreferrer" class="url">${url}</a>`);
       }
 
-      // 3. 이미지 경로 교체 (설정한 경로가 있으면 적용, 없으면 기본 이미지 유지)
       const finalSrc = customImgSrc ? customImgSrc : defaultImgSrc;
       const finalAlt = customImgAlt ? customImgAlt : `${name} 프로젝트 이미지`;
 
       $img.attr('src', finalSrc);$img.attr('alt', finalAlt);
 
-      // 4. .info 순차 애니메이션 & 이미지 페이드 인 실행
       $textBox.removeClass('changing');$imgBox.removeClass('changing');
     }, 180);
   }
 
-  // '준비중'(#none) 클릭 시 화면 상단 이동 방지
   $sec3.on('click', '#url a[href="#none"]', function (e) {
     e.preventDefault();
   });
 
-  // 연도별 필터링 및 상단 카운트 갱신 함수
   function filterProjectsByYear() {
     const $activeTab =$sec3.find('.tab_btn_list .tab_btn.on');
 
     if ($activeTab.length > 0) {
-      // 특정 연도 탭 선택 시
       const targetYear = $activeTab.text().trim();
       let totalCount = 0;
       let waCount = 0;
@@ -259,7 +326,6 @@ $(document).ready(function () {
       animatePointText($points.eq(2), padZero(waCount));
 
     } else {
-      // 모든 탭의 on이 꺼졌을 때 초기값('지나온길', '42', '12') 복원
       $projectItems.show();
 
       animatePointText($points.eq(0), initialPointTexts[0]);
@@ -267,7 +333,6 @@ $(document).ready(function () {
       animatePointText($points.eq(2), initialPointTexts[2]);
     }
 
-    // 표시된 리스트 중 첫 번째 프로젝트 자동 활성화
     const $visibleItems = $projectItems.filter(':visible');$sec3.find('.project_btn').removeClass('on');
 
     if ($visibleItems.length > 0) {
@@ -278,14 +343,12 @@ $(document).ready(function () {
     checkProgressVisibility();
   }
 
-  // 연도 탭(.tab_btn) 클릭 이벤트
   $sec3.on('click', '.tab_btn_list .tab_btn', function () {
     const $this = $(this);$sec3.find('.tab_btn_list .tab_btn').not($this).removeClass('on');$this.toggleClass('on');
 
     filterProjectsByYear();
   });
 
-  // 우측 프로젝트 버튼(.project_btn) 클릭 이벤트
   $sec3.on('click', '.project_btn', function () {
     const $this =$(this);
     if ($this.hasClass('on')) return;
@@ -295,7 +358,6 @@ $(document).ready(function () {
     updateProjectDetail($this);
   });
 
-  // 초기 진입 시 세팅
   if ($sec3.find('.tab_btn_list .tab_btn.on').length > 0) {
     filterProjectsByYear();
   } else {
@@ -304,4 +366,20 @@ $(document).ready(function () {
       updateProjectDetail($initProjectBtn);
     }
   }
+});
+
+$(function(){
+  $('.project_btn').on('click', function(){
+    if($(window).innerWidth() < 1300){
+      $('.sec3 .text_box').fadeIn();
+      $('body').addClass('modal');
+    }
+  });
+
+  $('.close_btn').on('click', function(){
+    if($(window).innerWidth() < 1300){
+      $('.sec3 .text_box').fadeOut();
+      $('body').removeClass('modal');
+    }
+  });
 });

@@ -1,40 +1,47 @@
-body{
+body {
     letter-spacing: -0.04em;
-    --font01:#111111;
-    --font02:#333333;
-    --font03:#555555;
-    --font04:#767676;
+    --font01: #111111;
+    --font02: #333333;
+    --font03: #555555;
+    --font04: #767676;
     color: var(--font02);
 }
-body button{
+
+body button {
     font-family: 'Pretendard';
 }
-.a_list{
+
+.a_list {
     position: fixed;
-    top:50%;
-    right:40px;
+    top: 50%;
+    right: 40px;
     transform: translateY(-50%);
     z-index: 1005;
     font-weight: 300;
 }
-.a_list > li + li{
+
+.a_list>li+li {
     margin-top: 4px;
 }
-.a_btn{
+
+.a_btn {
     font-size: 18px;
     font-weight: 300;
     display: flex;
-    gap:5px;
+    gap: 5px;
     color: var(--font04);
     transition: 0.3s;
 }
-.a_btn.active{
+
+.a_btn.active {
     color: var(--font01);
 }
-.a_btn span{
+
+.a_btn span {
     min-width: 25px;
 }
-.bottom_text{
+
+.bottom_text {
     position: fixed;
     width: 100%;
     height: 60px;
@@ -48,135 +55,164 @@ body button{
     z-index: 1005;
     font-weight: 300;
 }
+
 .sc_inner {
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  min-height: 100vh;
-  padding: 60px 20px;
-  position: relative;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding: 60px 20px;
+    position: relative;
 
 }
-.skill_list{
+
+.skill_list {
     position: absolute;
-    left: 0;
-    top: 20px;
+    left: 20px;
+    top: 40px;
     font-weight: 300;
 }
-.skill_list > li + li{
+
+.skill_list>li+li {
     margin-top: 4px;
 }
-.sec1 .text_box{
+
+.sec1 .text_box {
     text-align: center;
     font-size: 48px;
     font-weight: 700;
     color: var(--font01);
 }
-.sec1 .sc_inner{
+
+.sec1 .sc_inner {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.title_box{
+
+.title_box {
     border-bottom: 1px solid #111111;
     padding-bottom: 50px;
     margin-bottom: 30px;
 }
-.title_box .title{
+
+.title_box .title {
     font-size: 48px;
     font-weight: 700;
+    margin-bottom: 20px;
 }
-.title_box .sub_text{
+
+.title_box .sub_text {
     font-size: 22px;
     font-weight: 500;
 }
-.point{
+
+.point {
     color: var(--point-color);
 }
-.cont_box .left{
+
+.cont_box .left {
     padding: 15px;
     width: 480px;
 }
-.cont_box .right{
-    flex:1;
+
+.cont_box .right {
+    flex: 1;
     min-width: 0;
     padding-bottom: 250px;
 }
-.cont_box{
+
+.cont_box {
     display: flex;
     gap: 8%;
 }
-    .img_box{
+
+.img_box {
     max-width: 360px;
     aspect-ratio: 326 / 556;
+    margin: 0 auto;
     overflow: hidden;
-    border-bottom-right-radius: 20px;
 }
-.cont_box .right{
+
+.cont_box .right {
     padding-top: 80px;
 }
-.sec3 .cont_box .right{
+
+.sec3 .cont_box .right {
     padding-top: 60px;
-    max-height: 800px;
-    overflow-y: auto;
 }
-.img_box > img{
+
+.img_box>img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-.info .info_title{
+
+.info .info_title {
     color: var(--font03);
     font-size: 14px;
     font-weight: 300;
     margin-bottom: 5px
 }
-.info .info_cont{
-    font-size: 24px;
+
+.info .info_cont {
+    font-size: 22px;
     font-weight: 500;
     color: var(--font01);
+    line-height: 30px;
 }
-.info .info_cont > li + li{
-    margin-top: 15px;
+
+.info .info_cont>li+li {
+    margin-top: 20px;
 }
-.info .info_cont .guide{
+
+.info .info_cont .guide {
     color: var(--font03);
     font-size: 18px;
     padding-bottom: 1px;
     margin-left: 15px;
 }
-.left .info + .info{
+
+.left .info+.info {
     margin-top: 25px;
 }
-.right .info + .info{
+
+.right .info+.info {
     margin-top: 80px;
 }
-.sec3 .img_box{
+
+.sec3 .img_box {
     aspect-ratio: 1920 / 1024;
     overflow: hidden;
     border-bottom-right-radius: 20px;
 }
-.sec3 .text_box{
+
+.sec3 .text_box {
     margin-top: 50px;
 }
-.sec3 .left{
+
+.sec3 .left {
     width: 480px;
 }
-.tab_btn_list{
+
+.tab_btn_list {
     display: flex;
     gap: 20px;
 }
-.tab_btn_list .tab_btn{
+
+.tab_btn_list .tab_btn {
     font-size: 20px;
     font-weight: 500;
     color: var(--font04);
     transition: 0.3s;
     margin-bottom: 30px;
 }
-.tab_btn_list .tab_btn.on{
+
+.tab_btn_list .tab_btn.on {
     color: var(--font01);
 }
-.url::after{
+
+.url::after {
     content: '';
     display: inline-block;
     width: 25px;
@@ -186,14 +222,18 @@ body button{
     margin-bottom: -4px;
     margin-left: 5px;
 }
-.project_btn{
+
+.project_btn {
     color: var(--font04);
     transition: 0.3s;
     font-weight: 500;
     position: relative;
     padding-right: 40px;
+    text-align: left;
+    font-size: 20px;
 }
-.project_btn.project_btn::before{
+
+.project_btn.project_btn::before {
     content: '';
     position: absolute;
     left: 0px;
@@ -207,24 +247,27 @@ body button{
     opacity: 0.7;
     transform-origin: left;
 }
-.project_btn.project_btn.on::before{
+
+.project_btn.project_btn.on::before {
     width: 100%;
 }
-.project_btn.project_btn.sss::after{
+
+.project_btn.project_btn.sss::after {
     content: '';
     display: inline-block;
     width: 25px;
     aspect-ratio: 1 / 1;
     background: url(../img/ico_good.png) no-repeat center;
     background-size: contain;
-    position: absolute;
-    right: 0px;
+    position: relative;
     top: 3px;
 }
-.project_btn:hover{
+
+.project_btn:hover {
     color: var(--font02);
 }
-.project_btn.on{
+
+.project_btn.on {
     color: var(--font01) !important;
 }
 
@@ -232,64 +275,283 @@ body button{
    sec3: .sub_text 내 .point 한글자씩 롤링 애니메이션
 ======================================= */
 .sec3 .sub_text .point {
-  display: inline-flex;
-  overflow: hidden;
-  vertical-align: bottom;
+    display: inline-flex;
+    overflow: hidden;
+    vertical-align: bottom;
 }
 
 .sec3 .sub_text .point .char {
-  display: inline-block;
-  transform: translateY(0);
-  opacity: 1;
-  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.35s ease;
+    display: inline-block;
+    min-width: 12px;
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.35s ease;
 }
 
 .sec3 .sub_text .point .char.out {
-  transform: translateY(110%);
-  opacity: 0;
+    transform: translateY(110%);
+    opacity: 0;
 }
 
 /* =======================================
    sec3: 좌측 이미지 및 .info 순차 전환 인터랙션
 ======================================= */
 .sec3 .cont_box .left .img_box {
-  position: relative;
-  overflow: hidden;
+    position: relative;
+    overflow: hidden;
 }
 
 .sec3 .cont_box .left .img_box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top center;
-  transform: scale(1);
-  opacity: 1;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transform: scale(1);
+    opacity: 1;
+    transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
 /* 이미지가 교체될 때 살짝 작아지며 페이드아웃 */
 .sec3 .cont_box .left .img_box.changing img {
-  opacity: 0;
-  transform: scale(0.97);
+    opacity: 0;
+    transform: scale(0.97);
 }
 
 /* 좌측 상세 텍스트: .info 자체에 순차적(stagger) 애니메이션 적용 */
 .sec3 .cont_box .left .text_box .info {
-  transform: translateY(0);
-  opacity: 1;
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
 }
 
 /* 올라올 때 1번 ~ 4번 .info가 순차적으로 등장하도록 딜레이 차등 부여 */
-.sec3 .cont_box .left .text_box .info:nth-child(1) { transition-delay: 0.04s; }
-.sec3 .cont_box .left .text_box .info:nth-child(2) { transition-delay: 0.10s; }
-.sec3 .cont_box .left .text_box .info:nth-child(3) { transition-delay: 0.16s; }
-.sec3 .cont_box .left .text_box .info:nth-child(4) { transition-delay: 0.22s; }
+.sec3 .cont_box .left .text_box .info:nth-child(1) {
+    transition-delay: 0.04s;
+}
+
+.sec3 .cont_box .left .text_box .info:nth-child(2) {
+    transition-delay: 0.10s;
+}
+
+.sec3 .cont_box .left .text_box .info:nth-child(3) {
+    transition-delay: 0.16s;
+}
+
+.sec3 .cont_box .left .text_box .info:nth-child(4) {
+    transition-delay: 0.22s;
+}
 
 /* 텍스트 변경 시 먼저 빠르게 아래로 사라짐 (딜레이 없이 동시에 초기화) */
 .sec3 .cont_box .left .text_box.changing .info {
-  transform: translateY(14px);
-  opacity: 0;
-  transition-duration: 0.15s;
-  transition-delay: 0s;
+    transform: translateY(14px);
+    opacity: 0;
+    transition-duration: 0.15s;
+    transition-delay: 0s;
+}
+
+.close_btn {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 24px;
+    background-color: #222222;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 30px;
+}
+
+@media screen and (max-width: 1600px) {
+
+    .a_list {
+        display: none;
+    }
+
+}
+
+/* ===================================================
+   반응형: 1024px 이하에서는 풀페이지 해제 & 일반 스크롤 작동
+=================================================== */
+@media screen and (max-width: 1300px) {
+
+    html,
+    body {
+        height: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+        /* 브라우저 기본 세로 스크롤 허용 */
+    }
+
+    .full_wrap {
+        height: auto;
+        transform: none !important;
+        /* JS 인라인 translateY 강제 무력화 */
+        transition: none;
+    }
+
+    .section {
+        height: auto;
+        /* 100vh 고정 해제 */
+        min-height: 100vh;
+        /* 기본 한 화면 채우되 내용 길면 늘어남 */
+        overflow: visible;
+        /* 섹션 내부 개별 스크롤 해제 */
+    }
+
+    /* 일반 스크롤 모드에서는 섹션별 프로그레스 바 숨김 */
+    .progress_bar,
+    .section.has_progress .progress_bar {
+        display: none !important;
+    }
+
+    .sec2 .cont_box {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .sec2 .cont_box .left {
+        width: 100%;
+    }
+
+    .sec2 .cont_box .right {
+        width: 100%;
+    }
+
+    .sec2 .cont_box .left {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-end;
+        gap: 30px;
+        padding: 0;
+    }
+
+    .img_box {
+        aspect-ratio: auto;
+    }
+
+    .sec2 .text_box {
+        flex: 1;
+        min-width: 0;
+        padding-bottom: 30px;
+        min-width: 125px;
+    }
+
+    .cont_box .right {
+        padding-top: 15px;
+        padding: 15px;
+    }
+
+    .right .info+.info {
+        margin-top: 40px;
+    }
+
+    .sec3 .text_box {
+        margin-top: 0px;
+        position: fixed;
+        transform: translate(0%);
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        width: 100%;
+        height: 100%;
+        z-index: 3;
+        backdrop-filter: blur(3px);
+        display: none;
+    }
+
+    .sec3 .info_wrap {
+        content: '';
+        width: 100%;
+        height: 390px;
+        position: absolute;
+        bottom: 0px;
+        left: 0;
+        right: 0;
+        background-color: #fff;
+        padding: 50px 15px;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+    }
+
+    .sec3 .cont_box {
+        flex-direction: column;
+    }
+
+    .sec3 .cont_box .right {
+        padding-top: 20px;
+    }
+
+    .tab_btn_list .tab_btn {
+        margin-bottom: 0;
+    }
+
+    .project_btn {
+        padding-right: 0px;
+    }
+
+    .title_box {
+        padding: 0 15px 30px;
+        margin-bottom: 15px;
+    }
+
+    .bottom_text {
+        height: 40px;
+        padding-bottom: 10px;
+        font-size: 14px;
+    }
+
+    body.modal {
+        overflow: hidden;
+    }
+
+    .info .info_cont {
+        font-size: 16px;
+        line-height: 22px;
+    }
+
+    .info .info_title {
+        font-size: 12px;
+    }
+
+    .left .info+.info {
+        margin-top: 15px;
+    }
+
+    .project_btn {
+        color: var(--font04) !important;
+        font-size: 18px;
+    }
+
+    .project_btn.project_btn::before {
+        display: none !important;
+    }
+
+    .info .info_cont .guide {
+        font-size: 12px;
+        margin-left: 8px;
+    }
+
+    .title_box .title {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .title_box .sub_text {
+        font-size: 18px;
+        font-weight: 500;
+    }
+    .url::after{
+        width: 20px;
+    }
+    .close_btn{
+        display: flex;
+    }
 }
